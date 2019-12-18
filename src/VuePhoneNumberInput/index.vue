@@ -153,7 +153,14 @@
           return this.value
         },
         set (newPhone) {
-          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone})
+            if (newPhone.charAt(0) === '+') {
+                let parsedPhone = parsePhoneNumberFromString(newPhone);
+                if(parsedPhone !== undefined) {
+                    this.emitValues({countryCode: parsedPhone.country, phoneNumber: parsedPhone.nationalNumber})
+                }
+            } else {
+                this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone})
+            }
         }
       },
       shouldChooseCountry () {
